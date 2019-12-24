@@ -1,0 +1,19 @@
+{
+    "manifest_version": 2,
+    "name": "Global Aliexpress",
+    "description": "Redirects russian localized Aliexpress links to the global (english) version",
+    "version": "1.0",
+    "homepage_url": "https://github.com/IlyaEG/AliAlwaysEnglish.git",
+
+    "permissions": [
+        "webRequest",
+        "webRequestBlocking",
+        "https://aliexpress.ru/*",
+        "https://ru.aliexpress.com/*"
+    ],
+
+    "background": {
+        "scripts": ["redirect.js"]
+    }
+
+}
