@@ -9,7 +9,9 @@
         "webRequest",
         "webRequestBlocking",
         "https://aliexpress.ru/*",
-        "https://ru.aliexpress.com/*"
+        "https://*.aliexpress.ru/*",
+        "https://ru.aliexpress.com/*",
+        "https://www.aliexpress.com/ru/*"
     ],
 
     "background": {
