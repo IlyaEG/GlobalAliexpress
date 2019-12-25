@@ -37,11 +37,6 @@ function globalURLHeaders(requestDetails) {
             header.value = header.value.replace(/locale\=ru\_RU/g, "locale=en_US").replace(/site\=rus/g, "site=glo");
         }
     }
-    for (let header of requestDetails.requestHeaders) {
-        if (header.name.toLowerCase() === "cookie") {
-            console.log(header.value);
-        }
-    }
 }
 
 browser.webRequest.onBeforeRequest.addListener(
