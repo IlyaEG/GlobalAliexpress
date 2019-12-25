@@ -1,29 +1,22 @@
+var requiredUrls = ["*://aliexpress.ru/*", "*://aliexpress.com/*", "*://*.aliexpress.com/*", "*://*.aliexpress.ru/*"];
+var domainRegexp = new RegExp('^http(s)?\:\/\/([a-z]+.)?aliexpress\.ru', 'i');
+var subdomainRegexp = new RegExp('^http(s)?\:\/\/(ru.)?aliexpress\.com', 'i');
+var pathRegexp = new RegExp('^http(s)?\:\/\/([a-z].)?aliexpress\.com\/ru\//', 'i');
+
 function globalURL(requestDetails) {
-    document.cookie = "intl_locale=en_US;domain=.aliexpress.com;path=/ ";
-    document.cookie = "intl_locale=en_US;domain=.aliexpress.ru;path=/ ";
-    let requestUrl = requestDetails.url;
-    if (requestUrl.startsWith("https://aliexpress.ru")) {
-        let globalSite = requestUrl.replace("https://aliexpress.ru", "https://www.aliexpress.com");
+    var requestUrl = requestDetails.url;
+    if (domainRegexp.test(requestUrl)) {
+        let globalSite = requestUrl.replace(/aliexpress\.ru/g, "aliexpress.com");
         return {
             redirectUrl: globalSite
         };
-    } else if (requestUrl.startsWith("https://ru.aliexpress.com")) {
-        let globalSite = requestUrl.replace("https://ru.aliexpress.com", "https://www.aliexpress.com");
+    } else if (subdomainRegexp.test(requestUrl)) {
+        let globalSite = requestUrl.replace("ru.aliexpress.com", "www.aliexpress.com");
         return {
             redirectUrl: globalSite
         };
-    } else if (requestUrl.startsWith("https://www.aliexpress.com/ru/")) {
-        let globalSite = requestUrl.replace("https://www.aliexpress.com/ru/", "https://www.aliexpress.com/");
-        return {
-            redirectUrl: globalSite
-        };
-    } else if (requestUrl.startsWith("https://login.aliexpress.ru")) {
-        let globalSite = requestUrl.replace(/\.aliexpress\.ru/g, ".aliexpress.com");
-        return {
-            redirectUrl: globalSite
-        };
-    } else if (requestUrl.startsWith("https://trade.aliexpress.ru")) {
-        let globalSite = requestUrl.replace("https://trade.aliexpress.ru", "https://trade.aliexpress.com");
+    } else if (pathRegexp.test(requestUrl)) {
+        let globalSite = requestUrl.replace("aliexpress.com/ru/", "aliexpress.com/");
         return {
             redirectUrl: globalSite
         };
@@ -31,20 +24,39 @@ function globalURL(requestDetails) {
 
 }
 
-function globalURLHeaders(requestDetails) {
-    for (let header of requestDetails.requestHeaders) {
-        if (header.name.toLowerCase() === "cookie") {
+function globalURLReqHeaders(reqDetails) {
+    for (let header of reqDetails.requestHeaders) {
+        if (header.name === "Cookie") {
             header.value = header.value.replace(/locale\=ru\_RU/g, "locale=en_US").replace(/site\=rus/g, "site=glo");
         }
+    }
+    return {
+        requestHeaders: reqDetails.requestHeaders
+    }
+}
+
+function globalURLRespHeaders(respDetails) {
+    for (let header of respDetails.responseHeaders) {
+        if (header.name == "set-cookie") {
+            header.value = header.value.replace(/locale\=ru\_RU/g, "locale=en_US").replace(/site\=rus/g, "site=glo");
+        }
+    }
+    return {
+        responseHeaders: respDetails.responseHeaders
     }
 }
 
 browser.webRequest.onBeforeRequest.addListener(
     globalURL, {
-    urls: ["https://aliexpress.ru/*", "https://ru.aliexpress.com/*", "https://www.aliexpress.com/ru/*", "https://login.aliexpress.ru/*"]
-}, ["blocking"]);
+    urls: requiredUrls
+}, ["blocking", "requestBody"]);
 
 browser.webRequest.onBeforeSendHeaders.addListener(
-    globalURLHeaders, {
-    urls: ["https://aliexpress.ru/*", "https://ru.aliexpress.com/*", "https://www.aliexpress.com/ru/*", "https://login.aliexpress.ru/*"]
+    globalURLReqHeaders, {
+    urls: requiredUrls
 }, ["blocking", "requestHeaders"]);
+
+browser.webRequest.onHeadersReceived.addListener(
+    globalURLRespHeaders, {
+    urls: requiredUrls
+}, ["blocking", "responseHeaders"]);

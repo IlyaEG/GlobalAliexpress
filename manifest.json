@@ -8,10 +8,10 @@
     "permissions": [
         "webRequest",
         "webRequestBlocking",
-        "https://aliexpress.ru/*",
-        "https://*.aliexpress.ru/*",
-        "https://ru.aliexpress.com/*",
-        "https://www.aliexpress.com/ru/*"
+        "*://aliexpress.ru/*",
+        "*://*.aliexpress.ru/*",
+        "*://*.aliexpress.com/*",
+        "*://aliexpress.com/*"
     ],
 
     "background": {
