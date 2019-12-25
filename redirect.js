@@ -1,6 +1,6 @@
 var requiredUrls = ["*://aliexpress.ru/*", "*://aliexpress.com/*", "*://*.aliexpress.com/*", "*://*.aliexpress.ru/*"];
 var domainRegexp = new RegExp('^http(s)?\:\/\/([a-z]+.)?aliexpress\.ru', 'i');
-var subdomainRegexp = new RegExp('^http(s)?\:\/\/(ru.)?aliexpress\.com', 'i');
+var subdomainRegexp = new RegExp('^http(s)?\:\/\/ru\.aliexpress\.com', 'i');
 var pathRegexp = new RegExp('^http(s)?\:\/\/([a-z].)?aliexpress\.com\/ru\//', 'i');
 
 function globalURL(requestDetails) {
