@@ -1,11 +1,16 @@
 const requiredUrls = ["*://aliexpress.ru/*", "*://aliexpress.com/*", "*://*.aliexpress.com/*", "*://*.aliexpress.ru/*"];
+// Currently it seems to be impossible to redirect store pages :(
+const storeRegexp = new RegExp('^http(s)?\:\/\/([a-z0-9]+.)?aliexpress\.ru\/store', 'i');
+
 const domainRegexp = new RegExp('^http(s)?\:\/\/([a-z0-9]+.)?aliexpress\.ru', 'i');
 const subdomainRegexp = new RegExp('^http(s)?\:\/\/ru\.aliexpress\.com', 'i');
 const pathRegexp = new RegExp('^http(s)?\:\/\/([a-z].)?aliexpress\.com\/ru\//', 'i');
 
 function globalURL(requestDetails) {
     var requestUrl = requestDetails.url;
-    if (domainRegexp.test(requestUrl)) {
+    if (storeRegexp.test(requestUrl)) {
+        return;
+    } else if (domainRegexp.test(requestUrl)) {
         let globalSite = requestUrl.replace(/aliexpress\.ru/g, "aliexpress.com");
         return {
             redirectUrl: globalSite
