@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "Global Aliexpress",
     "description": "Redirects the Russian localized Aliexpress links to the global (english) version",
-    "version": "1.4",
+    "version": "1.5",
     "homepage_url": "https://github.com/IlyaEG/GlobalAliexpress",
 
     "permissions": [
