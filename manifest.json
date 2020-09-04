@@ -11,7 +11,9 @@
         "*://aliexpress.ru/*",
         "*://*.aliexpress.ru/*",
         "*://*.aliexpress.com/*",
-        "*://aliexpress.com/*"
+        "*://aliexpress.com/*",
+        "*://*.mmstat.com/*",
+        "*://mmstat.com/*"
     ],
 
     "background": {
